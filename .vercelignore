@@ -1,0 +1,7 @@
+# Yayina cikmasi gerekmeyen calisma dosyalari
+Nefestival.txt
+CONTENT_SOURCE.md
+README.md
+start.bat
+.git
+.gitignore
