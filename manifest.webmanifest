@@ -1,0 +1,16 @@
+{
+  "name": "Bir Nefest!val!",
+  "short_name": "Nefest!val!",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#081611",
+  "theme_color": "#0f241e",
+  "icons": [
+    {
+      "src": "favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}

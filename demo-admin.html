@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Bir Nefest!val! · Başvuru Kayıt Görünümü</title>
+  <style>
+    body{font-family:Inter,system-ui,sans-serif;background:#0b1914;color:#e9f6ed;margin:0;padding:24px}
+    .wrap{max-width:1100px;margin:0 auto}
+    h1{margin-top:0}.toolbar{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:18px}
+    button{padding:12px 16px;border:none;border-radius:14px;background:#7ef08c;color:#093017;font-weight:800;cursor:pointer}
+    table{width:100%;border-collapse:collapse;background:#10261d;border-radius:16px;overflow:hidden}
+    th,td{padding:14px 12px;border-bottom:1px solid rgba(255,255,255,.08);text-align:left;vertical-align:top}
+    th{background:#143225} code{white-space:pre-wrap;color:#d5ead9}
+    .muted{color:#a8c1b2}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>Başvuru kayıt görünümü</h1>
+    <p class="muted">Bu sayfa, tarayıcı içinde saklanan başvuruları hızlıca görmek için bırakıldı. Gerçek yayında CRM veya veri tabanı paneli ile değiştirilebilir.</p>
+    <div class="toolbar">
+      <button id="refresh">Yenile</button>
+      <button id="download">JSON indir</button>
+      <button id="clear">Kayıtları temizle</button>
+    </div>
+    <table>
+      <thead><tr><th>Zaman</th><th>Form</th><th>İçerik</th></tr></thead>
+      <tbody id="rows"></tbody>
+    </table>
+  </div>
+  <script>
+    const key='nefestival-submissions';
+    const rows=document.getElementById('rows');
+    function render(){
+      const items=JSON.parse(localStorage.getItem(key)||'[]');
+      rows.innerHTML=items.length?items.map(item=>`<tr><td>${new Date(item.createdAt).toLocaleString('tr-TR')}</td><td>${item.form}</td><td><code>${JSON.stringify(item.payload,null,2)}</code></td></tr>`).join(''):`<tr><td colspan="3">Henüz kayıt yok.</td></tr>`;
+    }
+    render();
+    document.getElementById('refresh').onclick=render;
+    document.getElementById('clear').onclick=()=>{localStorage.removeItem(key);render();};
+    document.getElementById('download').onclick=()=>{
+      const blob=new Blob([localStorage.getItem(key)||'[]'],{type:'application/json'});
+      const a=document.createElement('a');
+      a.href=URL.createObjectURL(blob);
+      a.download='nefestival-submissions.json';
+      a.click();
+      URL.revokeObjectURL(a.href);
+    };
+  </script>
+</body>
+</html>

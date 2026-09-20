@@ -1,0 +1,14 @@
+# OS
+Thumbs.db
+desktop.ini
+.DS_Store
+
+# Editor
+.vscode/
+.idea/
+
+# Vercel
+.vercel
+
+# Local notes / kaynak dosya
+Nefestival.txt
