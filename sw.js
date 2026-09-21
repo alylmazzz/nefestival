@@ -1,4 +1,4 @@
-const CACHE = 'nefestival-v5';
+const CACHE = 'nefestival-v6';
 const ASSETS = [
   './',
   'index.html',
@@ -22,6 +22,7 @@ const ASSETS = [
   'assets/logos/red-bull.png',
   'assets/logos/sporthink.png',
   'assets/logos/novus-global.png',
+  'assets/logos/mindcorp.png',
   'assets/signpost.jpg'
 ];
 self.addEventListener('install', event => {
