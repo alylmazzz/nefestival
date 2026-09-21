@@ -1,4 +1,4 @@
-const CACHE = 'nefestival-v6';
+const CACHE = 'nefestival-v7';
 const ASSETS = [
   './',
   'index.html',

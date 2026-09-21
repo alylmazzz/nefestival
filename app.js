@@ -87,6 +87,19 @@ function setupTilt(el) {
 }
 $$('.tilt-card, .zone-card').forEach(setupTilt);
 
+// MindCorp logosu: imlece göre diğer kartlardan daha belirgin eğilme
+if (!(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches)) {
+  $$('.logo-mindcorp').forEach(el => {
+    el.addEventListener('mousemove', (e) => {
+      const r = el.getBoundingClientRect();
+      const ry = ((e.clientX - r.left) / r.width - .5) * 36;
+      const rx = (.5 - (e.clientY - r.top) / r.height) * 36;
+      el.style.transform = `perspective(520px) rotateX(${rx}deg) rotateY(${ry}deg) translateY(-6px) scale(1.06)`;
+    });
+    el.addEventListener('mouseleave', () => { el.style.transform = ''; });
+  });
+}
+
 // floating tips
 const floatingTip = $('#floatingTip');
 function showTip(text, x, y) {
