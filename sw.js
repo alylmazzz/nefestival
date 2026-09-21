@@ -1,4 +1,4 @@
-const CACHE = 'nefestival-v2';
+const CACHE = 'nefestival-v3';
 const ASSETS = [
   './',
   'index.html',
@@ -8,12 +8,19 @@ const ASSETS = [
   'favicon.svg',
   'assets/poster.jpg',
   'assets/hero.jpg',
-  'assets/sea.jpg',
-  'assets/crowd.jpg',
+  'assets/coast-center.jpg',
+  'assets/stage.jpg',
   'assets/portrait.jpg',
-  'assets/logo-area.jpg',
-  'assets/bay.jpg',
-  'assets/botanical.jpg',
+  'assets/logo-area-full.jpg',
+  'assets/bay-center.jpg',
+  'assets/botanical-center.jpg',
+  'assets/logos/goethe-institut.png',
+  'assets/logos/fashion-revolution.png',
+  'assets/logos/kultur-turizm-bakanligi.png',
+  'assets/logos/ege-universitesi.png',
+  'assets/logos/red-bull.png',
+  'assets/logos/sporthink.png',
+  'assets/logos/novus-global.png',
   'assets/signpost.jpg'
 ];
 self.addEventListener('install', event => {

@@ -46,9 +46,8 @@ button{cursor:pointer}
 .brand-symbol svg{width:100%;height:100%}
 .brand-copy strong{display:block;color:#fff;font-size:1.06rem;letter-spacing:.01em}
 .brand-copy small{display:block;color:var(--muted)}
-.orb{animation:pulseOrb 5s ease-in-out infinite}.leaf{transform-origin:center;animation:leafFloat 4.5s ease-in-out infinite}.wave{animation:waveDash 4s linear infinite}.vein{opacity:.8}
+.orb{animation:pulseOrb 5s ease-in-out infinite}.wave{animation:waveDash 4s linear infinite}
 @keyframes pulseOrb{0%,100%{opacity:.65;transform:scale(1)}50%{opacity:1;transform:scale(1.03)}}
-@keyframes leafFloat{0%,100%{transform:rotate(0deg) translateY(0)}50%{transform:rotate(-5deg) translateY(-2px)}}
 @keyframes waveDash{from{stroke-dasharray:12 6;stroke-dashoffset:0}to{stroke-dasharray:12 6;stroke-dashoffset:-72}}
 .main-nav{display:flex;gap:20px;align-items:center;flex-wrap:wrap}
 .main-nav a{color:#f3fbf5;font-size:.96rem;position:relative}
@@ -108,11 +107,14 @@ button{cursor:pointer}
 .deep-card h3,.story-copy h3,.process-card h3,.green-card h3,.route-card h3,.note-card h3{margin:16px 0 12px;font-size:1.4rem;line-height:1.15;color:#10231b}
 .deep-card p,.story-copy p,.process-card p,.green-card p,.route-card p,.note-card p,.gallery-card figcaption,.hero-side p,.panel-split p{line-height:1.75;color:#4d6258}
 .story-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
-.story-card{background:#fff;border-radius:28px;overflow:hidden;box-shadow:var(--shadow);border:1px solid rgba(11,28,21,.08)}
+.story-card{display:flex;flex-direction:column;background:#fff;border-radius:28px;overflow:hidden;box-shadow:var(--shadow);border:1px solid rgba(11,28,21,.08)}
 .story-card.wide{grid-column:span 2}
-.story-card img{width:100%;height:320px;object-fit:cover}
-.story-card.wide img{height:360px}
+.story-card img{width:100%;height:320px;object-fit:cover;flex-shrink:0}
+.story-card.wide img{height:auto;aspect-ratio:755/400}
 .story-copy{padding:22px 24px 26px}
+.logo-row{list-style:none;margin:auto 0 0;padding:0 24px 26px;display:flex;flex-wrap:wrap;justify-content:center;gap:10px}
+.logo-row li{flex:0 1 calc((100% - 20px) / 3);height:86px;display:grid;place-items:center;padding:6px 8px;background:#fff;border:2.5px solid #10231b;border-radius:14px}
+.story-card .logo-row img{width:auto;height:auto;max-width:100%;max-height:68px;object-fit:contain}
 .immersive-zones{background:radial-gradient(circle at top left,#e8f7eb 0,#f6fbf7 38%,#eef8f1 100%)}
 .zone-layout{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;perspective:1100px}
 .zone-card{position:relative;min-height:220px;padding:22px;border-radius:26px;background:linear-gradient(180deg,#163726,#10271d);color:#eefbf1;border:1px solid rgba(255,255,255,.08);box-shadow:var(--shadow);transform-style:preserve-3d;overflow:hidden}
@@ -135,7 +137,8 @@ button{cursor:pointer}
 .route-card{padding:22px;min-height:250px;background:linear-gradient(180deg,#fff,#f3faf5)}
 .route-card a{display:inline-flex;margin-top:12px;color:#17693a;font-weight:700}
 .location-gallery{grid-template-columns:repeat(3,minmax(0,1fr));margin-top:28px}
-.gallery-card img{width:100%;height:260px;object-fit:cover}
+.gallery-card img{width:100%;height:260px;object-fit:cover;object-position:center top}
+.gallery-card--sky img{border:1.5px solid rgba(52,120,168,.55);border-bottom:0;border-radius:28px 28px 0 0}
 .gallery-card figcaption{padding:16px 18px;background:#fff}
 .application-section{background:linear-gradient(180deg,#edf8f0,#f8fdf9)}
 .tabs{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:20px}
@@ -211,7 +214,8 @@ button{cursor:pointer}
   .section{padding:84px 0}
   .panel-grid,.green-grid,.story-grid,.process-grid,.location-gallery,.partner-notes,.route-stops,.zone-layout,.form-row{grid-template-columns:1fr}
   .story-card.wide{grid-column:auto}
-  .story-card img,.story-card.wide img,.gallery-card img{height:220px}
+  .story-card img,.gallery-card img{height:220px}
+  .story-card.wide img{height:auto}
   .hero{padding-top:38px}.hero-grid{padding-bottom:120px}
   .hero h1{font-size:2.7rem}
   .section-head{display:block}.section-head p{margin-top:14px}
@@ -219,3 +223,4 @@ button{cursor:pointer}
   .cta-box{padding:26px;display:grid}
   .footer-bottom{display:grid}
 }
+@media (prefers-reduced-motion:reduce){.brand-symbol .orb,.brand-symbol .wave{animation:none}}

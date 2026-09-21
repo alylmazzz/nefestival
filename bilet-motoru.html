@@ -1,0 +1,226 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Bilet Gelir Motoru · Bir Nefest!val!</title>
+  <meta name="description" content="Bilet fazlarını, fiyatları ve talep varsayımlarını değiştirip satış senaryolarını simüle eden yönetim paneli aracı.">
+  <meta name="theme-color" content="#27483B">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fragment+Mono&family=Manrope:wght@400;500;600;700;800&family=Outfit:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="bilet-motoru.css">
+</head>
+<body>
+  <a class="skip" href="#main">İçeriğe geç</a>
+
+  <header class="topnav">
+    <div class="wrap topnav-in">
+      <p class="brand"><a href="./">Bir Nefest!val</a><span class="mono">YÖNETİM PANELİ</span></p>
+      <nav class="topnav-links" aria-label="Panel bölümleri">
+        <span>Kontrol Merkezi</span>
+        <span>Bütçe</span>
+        <span class="is-on" aria-current="page">Bilet Gelir Motoru</span>
+      </nav>
+      <a class="back" href="./">Siteye dön ↗</a>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="wrap hero-in">
+      <div>
+        <p class="over mono">FİNANS &amp; BİLETLEME / KARAR DESTEK</p>
+        <h1>Bilet Gelir Motoru</h1>
+        <p class="lede">Faz fiyatlarını, kotaları ve talep varsayımlarını değiştir; tek tuşla binlerce satış senaryosunu simüle et, sonucu ve iyileştirme önerilerini gör.</p>
+      </div>
+      <p class="live-pill"><span class="pulse" aria-hidden="true"></span>Canlı model · tüm girdiler düzenlenebilir</p>
+    </div>
+  </section>
+
+  <main id="main" class="wrap layout">
+    <aside class="params" id="params" aria-labelledby="paramsTitle">
+      <div class="params-head">
+        <h2 id="paramsTitle">Parametreler</h2>
+        <button type="button" id="resetBtn" class="ghost sm">Varsayılanlar</button>
+      </div>
+
+      <details class="grp" open>
+        <summary>Faz fiyatları ve kotalar</summary>
+        <div id="phaseRows" class="ptable"></div>
+        <p class="hint">Bir fazın kotası dolunca fiyat otomatik olarak sonraki faza geçer. Kapı, etkinlik günü satılır.</p>
+      </details>
+
+      <details class="grp" open>
+        <summary>Gelir ve gider</summary>
+        <div class="fields" id="fIncome"></div>
+      </details>
+
+      <details class="grp">
+        <summary>Saha</summary>
+        <div class="fields" id="fSite"></div>
+      </details>
+
+      <details class="grp" open>
+        <summary>Talep varsayımları</summary>
+        <div class="fields" id="fDemand"></div>
+        <div class="field">
+          <span class="flabel" id="sensLabel">Fiyat hassasiyeti<small>Yüksek: fiyat medyanı geçince talep hızla düşer</small></span>
+          <div class="seg" role="group" aria-labelledby="sensLabel">
+            <button type="button" data-sens="dusuk" aria-pressed="false">Düşük</button>
+            <button type="button" data-sens="orta" aria-pressed="true">Orta</button>
+            <button type="button" data-sens="yuksek" aria-pressed="false">Yüksek</button>
+          </div>
+        </div>
+        <label class="field">
+          <span class="flabel">Simülasyon sayısı<small>Daha çok senaryo = daha kararlı sonuç</small></span>
+          <select id="runsSel">
+            <option value="500">500 senaryo (hızlı)</option>
+            <option value="2000">2.000 senaryo</option>
+            <option value="5000">5.000 senaryo (hassas)</option>
+          </select>
+        </label>
+        <p class="hint">Talep değerleri örnek varsayımdır; planın kendi kotalarına göre ayarlandı. Ön kayıt ve gerçek satış verisiyle güncelle.</p>
+      </details>
+
+      <div class="run-bar">
+        <button type="button" id="runBtn" class="run">▶ Simüle et</button>
+        <button type="button" id="reseedBtn" class="ghost" title="Aynı parametrelerle yeni bir rastgele örneklem çek">Yeniden örnekle</button>
+      </div>
+      <p id="status" class="status" role="status" aria-live="polite"></p>
+    </aside>
+
+    <section class="stage" aria-label="Sonuçlar">
+      <div class="tabs" role="tablist" aria-label="Görünüm">
+        <button type="button" role="tab" id="t-live" aria-controls="p-live" aria-selected="true">Fiyat eğrisi · canlı satış</button>
+        <button type="button" role="tab" id="t-sim" aria-controls="p-sim" aria-selected="false" tabindex="-1">Senaryo simülasyonu</button>
+        <button type="button" role="tab" id="t-sav" aria-controls="p-sav" aria-selected="false" tabindex="-1">Kayıtlı senaryolar <span id="savCount" class="count"></span></button>
+      </div>
+
+      <!-- Canlı satış -->
+      <div role="tabpanel" id="p-live" aria-labelledby="t-live" class="panel">
+        <div class="kpis" id="liveKpis"></div>
+
+        <article class="card">
+          <header class="card-h">
+            <h3>Fiyat eğrisi</h3>
+            <p class="card-note mono">GRAFİĞE TIKLA → SATIŞ NOKTASINI TAŞI</p>
+          </header>
+          <div class="chart" id="ladderChart"></div>
+        </article>
+
+        <article class="card">
+          <header class="card-h"><h3>Otomatik faz eşikleri</h3><p class="card-note mono">KARTA TIKLA → FAZIN BAŞINA GİT</p></header>
+          <div class="phase-cards" id="phaseCards"></div>
+        </article>
+
+        <article class="card">
+          <header class="card-h"><h3>Satış simülatörü</h3><output id="soldOut" class="mono out" for="soldRange soldNum"></output></header>
+          <div class="steppers" role="group" aria-label="Satış adımları">
+            <button type="button" data-step="1">+1</button>
+            <button type="button" data-step="10">+10</button>
+            <button type="button" data-step="50">+50</button>
+            <button type="button" data-step="100">+100</button>
+            <button type="button" data-step="-1">−1</button>
+            <button type="button" data-step="-10">−10</button>
+            <button type="button" data-step="-50">−50</button>
+            <button type="button" data-step="-100">−100</button>
+            <button type="button" data-step="reset" class="reset">Reset</button>
+          </div>
+          <div class="slider-row">
+            <input type="range" id="soldRange" min="0" max="220" step="1" value="110" aria-label="Satılan bilet">
+            <input type="number" id="soldNum" min="0" step="1" inputmode="numeric" aria-label="Satılan bilet sayısı">
+          </div>
+          <div class="be">
+            <div class="be-top"><span id="beText"></span><span id="beMeta" class="mono"></span></div>
+            <div class="be-bar" id="beBar" role="progressbar" aria-label="Başabaşa ilerleme" aria-valuemin="0" aria-valuemax="100"><i id="beFill"></i></div>
+          </div>
+        </article>
+
+        <article class="verdict">
+          <p class="v-over mono">NET KARAR</p>
+          <h3 class="v-head" id="liveHead"></h3>
+          <p class="v-sub" id="liveSub"></p>
+          <div class="v-actions">
+            <button type="button" id="jumpBtn" class="light">Sonraki eşiğe atla →</button>
+            <button type="button" class="light ghosty" data-run>Bu parametrelerle simüle et</button>
+          </div>
+        </article>
+      </div>
+
+      <!-- Senaryo simülasyonu -->
+      <div role="tabpanel" id="p-sim" aria-labelledby="t-sim" class="panel" hidden>
+        <div class="stale" id="staleBar" hidden>
+          <span>Parametreler değişti; aşağıdaki sonuçlar eski girdilere ait.</span>
+          <button type="button" class="run sm" data-run>▶ Yeniden simüle et</button>
+        </div>
+        <div id="simEmpty" class="empty">
+          <p>Henüz simülasyon yok.</p>
+          <button type="button" class="run" data-run>▶ Simüle et</button>
+        </div>
+        <div id="simBody" hidden>
+          <p class="sim-meta mono" id="simMeta"></p>
+          <div class="kpis" id="simKpis"></div>
+
+          <article class="card">
+            <header class="card-h">
+              <h3>Net sonuç dağılımı</h3>
+              <ul class="legend" aria-label="Renk açıklaması">
+                <li><i class="sw neg"></i>Açık (zarar)</li>
+                <li><i class="sw pos"></i>Fazla (kâr)</li>
+                <li><i class="sw med"></i><span id="histMed">Medyan</span></li>
+              </ul>
+            </header>
+            <div class="chart" id="histChart"></div>
+            <details class="data">
+              <summary>Veriyi tablo olarak göster</summary>
+              <div class="table-wrap" id="histTable"></div>
+            </details>
+          </article>
+
+          <article class="verdict" id="simVerdict"></article>
+
+          <article class="card">
+            <header class="card-h"><h3>Faz bazında sonuç</h3><p class="card-note mono">SİMÜLASYON ORTALAMASI</p></header>
+            <div class="table-wrap" id="stepTable"></div>
+          </article>
+
+          <article class="card">
+            <header class="card-h"><h3>Plan: tüm kotalar dolarsa</h3><p class="card-note mono">FİGMA GELİR PLANIYLA AYNI YÖNTEM</p></header>
+            <div class="plan-grid" id="planGrid"></div>
+          </article>
+
+          <p class="method">Model: Potansiyel alıcılar sırayla gelir. Ödeme isteği (log-normal) o anki faz fiyatını karşılayan kişi bilet alır. Kota dolunca fiyat sonraki faza geçer, alamayan alıcı ayrılır. Toplam talep her senaryoda ortak bir şokla birlikte oynar; kapı alıcıları ayrı bir havuzdan gelir. Öneriler, aynı rastgele sayılarla tek adımlık değişiklikler denenerek bulunur.</p>
+        </div>
+      </div>
+
+      <!-- Kayıtlı senaryolar -->
+      <div role="tabpanel" id="p-sav" aria-labelledby="t-sav" class="panel" hidden>
+        <article class="card">
+          <header class="card-h"><h3>Mevcut parametreleri kaydet</h3></header>
+          <form id="saveForm" class="save-row">
+            <label class="sr" for="saveName">Senaryo adı</label>
+            <input id="saveName" maxlength="40" placeholder="Örn. Sponsor 175K + fiyat +%10" autocomplete="off">
+            <button type="submit" class="run sm">Kaydet</button>
+            <button type="button" id="shareBtn" class="ghost">Paylaşım bağlantısı</button>
+          </form>
+          <input id="shareOut" class="share-out" readonly hidden aria-label="Paylaşım bağlantısı">
+          <p class="hint">Kayıtlar yalnız bu tarayıcıda tutulur. Ekip arkadaşına göndermek için paylaşım bağlantısını kullan; bağlantı tüm parametreleri taşır.</p>
+        </article>
+        <article class="card">
+          <header class="card-h"><h3>Karşılaştırma</h3><p class="card-note mono">EN YÜKSEK BAŞABAŞ OLASILIĞI İŞARETLENİR</p></header>
+          <div class="table-wrap" id="savedList"></div>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <footer class="foot">
+    <div class="wrap">Bir Nefest!val! · Bilet Gelir Motoru. Sonuçlar tahmindir, ciro garantisi değildir. Rakamlar planlama aralığıdır.</div>
+  </footer>
+
+  <p id="announce" class="sr" aria-live="polite"></p>
+  <script src="bilet-motoru.js" defer></script>
+</body>
+</html>

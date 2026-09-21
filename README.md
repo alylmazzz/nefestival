@@ -14,6 +14,7 @@ Bu paket, kullanıcının gönderdiği festival posteri temel alınarak gelişti
 - başvuru merkezi: ön kayıt, gönüllü, campus network, vendor, sponsor, basın/creator
 - offline/PWA desteği
 - demo-admin.html üzerinden yerel başvuru kayıtlarını görüntüleme
+- bilet-motoru.html: faz fiyatlı bilet satış simülatörü (canlı satış merdiveni + Monte Carlo senaryo simülasyonu, öneriler, senaryo kaydı/paylaşım bağlantısı)
 
 ## Çalıştırma
 
