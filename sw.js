@@ -1,4 +1,4 @@
-const CACHE = 'nefestival-v8';
+const CACHE = 'nefestival-v9';
 const ASSETS = [
   './',
   'index.html',
@@ -24,7 +24,8 @@ const ASSETS = [
   'assets/logos/sporthink.png',
   'assets/logos/novus-global.png',
   'assets/logos/mindcorp.png',
-  'assets/signpost.jpg'
+  'assets/signpost.jpg',
+  'assets/venue-aerial.webp'
 ];
 self.addEventListener('install', event => {
   // yeni sürüm, eski sekmelerin kapanmasını beklemeden devreye girer

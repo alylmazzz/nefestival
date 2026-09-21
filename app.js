@@ -127,6 +127,29 @@ $$('[data-tip], [data-bubble]').forEach(el => {
   el.addEventListener('focusout', hideTip);
 });
 
+// etkinlik mekânı: haritadaki numara ile bölge kartı birlikte yanar
+const venueItems = $$('.venue-pin, .venue-zone');
+function setVenueZone(id) {
+  venueItems.forEach(el => el.classList.toggle('is-active', el.dataset.zone === id));
+}
+venueItems.forEach(el => {
+  el.addEventListener('mouseenter', () => setVenueZone(el.dataset.zone));
+  el.addEventListener('mouseleave', () => setVenueZone(null));
+  el.addEventListener('focusin', () => setVenueZone(el.dataset.zone));
+  el.addEventListener('focusout', () => setVenueZone(null));
+});
+$$('.venue-pin').forEach(pin => {
+  pin.addEventListener('click', (e) => {
+    // kart zaten ekrandaysa kaydırma yok, yalnızca vurgula; değilse bağlantı karta götürür
+    const card = document.getElementById(pin.getAttribute('href').slice(1));
+    const r = card?.getBoundingClientRect();
+    if (r && r.top >= 0 && r.bottom <= window.innerHeight) {
+      e.preventDefault();
+      setVenueZone(pin.dataset.zone);
+    }
+  });
+});
+
 // tabs
 const tabButtons = $$('.tab-btn');
 const tabPanels = $$('.tab-panel');
