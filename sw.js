@@ -1,4 +1,4 @@
-const CACHE = 'nefestival-v7';
+const CACHE = 'nefestival-v8';
 const ASSETS = [
   './',
   'index.html',
@@ -7,6 +7,7 @@ const ASSETS = [
   'manifest.webmanifest',
   'favicon.svg',
   'assets/brand/leaf.svg',
+  'assets/brand/leaf-hero.svg',
   'assets/poster.jpg',
   'assets/hero.jpg',
   'assets/coast-center.jpg',
