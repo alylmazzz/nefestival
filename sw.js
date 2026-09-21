@@ -1,4 +1,4 @@
-const CACHE = 'nefestival-v3';
+const CACHE = 'nefestival-v4';
 const ASSETS = [
   './',
   'index.html',
@@ -24,13 +24,37 @@ const ASSETS = [
   'assets/signpost.jpg'
 ];
 self.addEventListener('install', event => {
+  // yeni sürüm, eski sekmelerin kapanmasını beklemeden devreye girer
+  self.skipWaiting();
   event.waitUntil(caches.open(CACHE).then(cache => cache.addAll(ASSETS)));
 });
 self.addEventListener('activate', event => {
-  event.waitUntil(
-    caches.keys().then(keys => Promise.all(keys.filter(key => key !== CACHE).map(key => caches.delete(key))))
-  );
+  event.waitUntil((async () => {
+    const stale = (await caches.keys()).filter(key => key !== CACHE);
+    await Promise.all(stale.map(key => caches.delete(key)));
+    await self.clients.claim();
+    // güncellemede (eski önbellek varsa) açık sekmeleri yeni sürüme taşı; ilk ziyarette yenileme yok
+    if (stale.length) {
+      const windows = await self.clients.matchAll({ type: 'window' });
+      windows.forEach(win => win.navigate(win.url).catch(() => {}));
+    }
+  })());
 });
 self.addEventListener('fetch', event => {
-  event.respondWith(caches.match(event.request).then(cached => cached || fetch(event.request)));
+  const req = event.request;
+  if (req.method !== 'GET') return;
+  // sayfalar önce ağdan: yayındaki son sürüm hemen görünür; çevrimdışıyken önbellek devreye girer
+  const isPage = req.mode === 'navigate' || (req.headers.get('accept') || '').includes('text/html');
+  if (isPage) {
+    event.respondWith(
+      fetch(req)
+        .then(res => {
+          if (res.ok) { const copy = res.clone(); caches.open(CACHE).then(cache => cache.put(req, copy)); }
+          return res;
+        })
+        .catch(() => caches.match(req).then(cached => cached || caches.match('index.html')))
+    );
+    return;
+  }
+  event.respondWith(caches.match(req).then(cached => cached || fetch(req)));
 });
