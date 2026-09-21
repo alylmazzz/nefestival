@@ -46,9 +46,6 @@ button{cursor:pointer}
 .brand-symbol svg{width:100%;height:100%}
 .brand-copy strong{display:block;color:#fff;font-size:1.06rem;letter-spacing:.01em}
 .brand-copy small{display:block;color:var(--muted)}
-.orb{animation:pulseOrb 5s ease-in-out infinite}.wave{animation:waveDash 4s linear infinite}
-@keyframes pulseOrb{0%,100%{opacity:.65;transform:scale(1)}50%{opacity:1;transform:scale(1.03)}}
-@keyframes waveDash{from{stroke-dasharray:12 6;stroke-dashoffset:0}to{stroke-dasharray:12 6;stroke-dashoffset:-72}}
 .main-nav{display:flex;gap:20px;align-items:center;flex-wrap:wrap}
 .main-nav a{color:#f3fbf5;font-size:.96rem;position:relative}
 .main-nav a:after{content:"";position:absolute;left:0;bottom:-6px;width:0;height:2px;border-radius:10px;background:linear-gradient(90deg,var(--green),var(--teal));transition:width .35s var(--ease)}
@@ -84,6 +81,12 @@ button{cursor:pointer}
 .hero-stats strong{display:block;font-size:1.04rem;color:#fff}
 .hero-stats small{display:block;color:#d4e7d9;margin-top:6px;line-height:1.45}
 .hero-side{display:grid;gap:18px}
+/* hat yaprağı amblemi: geri sayımın hemen üstünde; dalga şeridi sağda ekran kenarına, solda metin kartının arkasına akar */
+.hero-emblem{position:relative;height:clamp(260px,31vw,460px);margin-bottom:-6px;pointer-events:none}
+.hero-emblem-art{position:absolute;bottom:0;left:50%;height:100%;aspect-ratio:2600/860;transform:translateX(-38.85%)}
+.hero-emblem-art::before{content:"";position:absolute;left:28.1%;top:2%;width:21.5%;aspect-ratio:1;border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,.72) 0%,rgba(236,244,239,.5) 48%,rgba(236,244,239,0) 72%);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);-webkit-mask:radial-gradient(circle,#000 55%,transparent 72%);mask:radial-gradient(circle,#000 55%,transparent 72%)}
+.hero-emblem-svg{position:relative;display:block;width:100%;height:100%;overflow:visible}
+.hero-copy{position:relative;z-index:2}
 .countdown-card,.live-note{border-radius:28px;padding:24px}
 .countdown{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:14px 0 18px}
 .countdown div{padding:16px 10px;border-radius:20px;background:rgba(6,19,15,.44);text-align:center;border:1px solid rgba(255,255,255,.11)}
@@ -217,10 +220,10 @@ button{cursor:pointer}
   .story-card img,.gallery-card img{height:220px}
   .story-card.wide img{height:auto}
   .hero{padding-top:38px}.hero-grid{padding-bottom:120px}
+  .hero-emblem{height:230px}
   .hero h1{font-size:2.7rem}
   .section-head{display:block}.section-head p{margin-top:14px}
   .route-map-wrap iframe{height:360px}
   .cta-box{padding:26px;display:grid}
   .footer-bottom{display:grid}
 }
-@media (prefers-reduced-motion:reduce){.brand-symbol .orb,.brand-symbol .wave{animation:none}}

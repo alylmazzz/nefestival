@@ -1,4 +1,4 @@
-const CACHE = 'nefestival-v4';
+const CACHE = 'nefestival-v5';
 const ASSETS = [
   './',
   'index.html',
@@ -6,6 +6,7 @@ const ASSETS = [
   'app.js',
   'manifest.webmanifest',
   'favicon.svg',
+  'assets/brand/leaf.svg',
   'assets/poster.jpg',
   'assets/hero.jpg',
   'assets/coast-center.jpg',

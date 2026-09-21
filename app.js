@@ -1,9 +1,9 @@
 const $ = (s, ctx = document) => ctx.querySelector(s);
 const $$ = (s, ctx = document) => Array.from(ctx.querySelectorAll(s));
 
-// hareket azaltma tercihinde logodaki dalga (SVG) animasyonunu durdur
+// hareket azaltma tercihinde logo ve amblemdeki dalga (SVG) animasyonlarını durdur
 if (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches) {
-  $$('.brand-symbol svg').forEach(svg => svg.pauseAnimations && svg.pauseAnimations());
+  $$('.brand-symbol svg, .hero-emblem svg').forEach(svg => svg.pauseAnimations && svg.pauseAnimations());
 }
 
 // mobile nav
